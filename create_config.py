@@ -29,7 +29,7 @@ if __name__=='__main__':
     parser.add_argument('-v','--validation',help='path to the tfrecord to be used for validation',required=True)
     parser.add_argument('-l','--label', help="path to the labelmap file",required=True)
     parser.add_argument('-w','--weights',help="path to the checkpoint path to be used as initialization",required=True)
-    parser.add_argument('-o','--output', help="path were the output config file will be saved",default="model.config")
+    parser.add_argument('-o','--output', help="path where the output config file will be saved",default="model.config")
     args=parser.parse_args()
 
     for p in [args.training, args.validation, args.label]:

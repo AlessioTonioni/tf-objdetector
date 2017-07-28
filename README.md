@@ -13,19 +13,20 @@ Follow the step by step guide to train, validate and deploy your own object dete
 
     + 'images' --> folder containing the training image
     + 'labels' --> containing 1 annotation file for each image in .txt (one BB per row with class x-center y-center w h) 
-    + 'traininglist.txt' --> a txt file where each row refer an image to be used as trainign sample, images and labels folder should be contained in the same directory
+    + 'traininglist.txt' --> a txt file where each row refer an image to be used as training sample, images and labels folder should be contained in the same directory
+    + 'validationlist.txt' --> a txt file where each row refer an image to be used as validation sample, images and labels folder should be contained in the same directory
     + 'className.txt' --> a txt file with the name of the class to be displayed, one per row
 
-2. Convert the dataset to tfrecord:
+2. Convert both the trainign and validation set to tfrecord:
 
     ``` bash
     python yolo_tf_converter.py \
-        -t ${TRAINING_LIST} \
+        -t ${IMAGE_LIST} \
         -o ${OUTPUT} \
         -c ${CLASSES}
     ```
-    + TRAINING_LIST: path to traininglist.txt
-    + OUTPUT: where the trainign set will be saved (tfrecord+labelmap)
+    + IMAGE_LIST: path to traininglist.txt or validationlist.txt
+    + OUTPUT: where the output files will be saved (tfrecord+labelmap)
     + CLASSES: path to the className.txt file
 
 3. Create the configuration file for training using the create_config.py script
@@ -38,9 +39,9 @@ Follow the step by step guide to train, validate and deploy your own object dete
         -w ${WEIGHTS} \
         -m ${MODEL}
     ```
-    + TRAINING,VALIDATION: path to the tfrecord to be used for trainign and validation
+    + TRAINING,VALIDATION: path to the tfrecord to be used for training and validation
     + LABELS: path to the labelmap.pbtxt
-    + WEIGHTS: path to the starting weights of the model, availabel here --> <https://github.com/tensorflow/models/blob/master/object_detection/g3doc/detection_model_zoo.md>
+    + WEIGHTS: path to the starting weights of the model, available here --> <https://github.com/tensorflow/models/blob/master/object_detection/g3doc/detection_model_zoo.md>
     + MODEL: name of the model to be used
 
     If needed change the parameter in the produced 'model.config'
@@ -57,7 +58,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
     + PATH_TO_YOUR_PIPELINE_CONFIG: path to the model.config generated at step 3
     + PATH_TO_TRAIN_DIR: where the model will be saved
 
-5. Run evaluation
+5. OPTIONAL - Run evaluation
 
     ```bash
     # From the tensorflow/models/ directory

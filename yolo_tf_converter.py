@@ -132,10 +132,10 @@ def convert_yolo_tf(train_file,tf_record_out,label_name_out,class_to_name):
     print('Conversion Done')
 
 if __name__=='__main__':
-    parser = argparse.ArgumentParser(description="Converts a training datatset from yolo format to tfrecord to be used with tensorflow object detectors")
-    parser.add_argument('-t','--trainingList', help="path to the training/test List file used by yolo",required=True)
+    parser = argparse.ArgumentParser(description="Converts a training dataset from yolo format to tfrecord to be used with tensorflow object detectors")
+    parser.add_argument('-t','--trainingList', help="path to the training/test list file used by yolo",required=True)
     parser.add_argument('-o', '--outputTfRecord', help="where the output tfrecords will be saved", required=True)
-    parser.add_argument('-c','--classNameFile',help="Path to the file containing class names",required=True)
+    parser.add_argument('-c','--classNameFile',help="path to the file containing class names",required=True)
     parser.add_argument('-l', '--labelMap', help="where the label map file will be saved, leave empty for default", default='')
     args = parser.parse_args()
 
