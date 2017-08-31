@@ -74,11 +74,11 @@ Follow the step by step guide to train, validate and deploy your own object dete
 
     ``` bash
     # From tensorflow/models
-    python object_detection/export_inference_graph \
+    python object_detection/export_inference_graph.py \
         --input_type image_tensor \
         --pipeline_config_path ${PIPELINE_CONFIG_PATH} \
-        --checkpoint_path model.ckpt-${CHECKPOINT_NUMBER} \
-        --inference_graph_path output_inference_graph.pb
+        --trained_checkpoint_prefix model.ckpt-${CHECKPOINT_NUMBER} \
+        --output_directory output_inference_graph
     ```
 
 7. Visual Detection 
@@ -91,6 +91,6 @@ Follow the step by step guide to train, validate and deploy your own object dete
         -v
     ```
 
-    + GRAPH: path to the inference graph produced at step 6
+    + GRAPH: path to the frozen inference graph produced at step 6
     + LABEL_MAP: path to labelmap.pbtxt
     + TARGET: path to an image to test or to a .txt file with the list of image to test (one per row)

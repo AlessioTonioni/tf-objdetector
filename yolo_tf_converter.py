@@ -102,7 +102,7 @@ def convert_yolo_tf(train_file,tf_record_out,label_name_out,class_to_name):
         class_names=[]
         with open(class_to_name) as f_in:
             class_names=f_in.readlines()
-        class_names=[c for c in class_names if len(c)>0]
+        class_names=[c.strip() for c in class_names if len(c)>0]
     except Exception as e:
         print('Caught Exception: {}'.format(e))
         print('Shutting Down')
@@ -125,7 +125,7 @@ def convert_yolo_tf(train_file,tf_record_out,label_name_out,class_to_name):
 
     print('\nTFRecord saved, creating label_name.pbtxt')
     with open(label_name_out, 'w+') as f_out:
-        proto_string="\nitem{{\n\tid: {}\n\tname: '{}'\n}}\n"
+        proto_string="\nitem{{\n\tid: {}\n\tname: '{}' \n }}\n"
         for i,c in enumerate(class_names):
             f_out.write(proto_string.format(i+1,c))
     
