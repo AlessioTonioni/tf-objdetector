@@ -88,9 +88,11 @@ Follow the step by step guide to train, validate and deploy your own object dete
         -g ${GRAPH} \
         -l ${LABEL_MAP} \
         -t ${TARGET} \
+        -o ${OUT_FLD}
         -v
     ```
 
     + GRAPH: path to the frozen inference graph produced at step 6
     + LABEL_MAP: path to labelmap.pbtxt
     + TARGET: path to an image to test or to a .txt file with the list of image to test (one per row)
+    + OUT_FLD: folder were the prediction will be saved, one '.txt' file for each image with one detection per row encoded as: %class %X_center %Y_center %width %height %confidence

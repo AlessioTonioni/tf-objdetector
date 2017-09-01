@@ -85,6 +85,7 @@ if __name__=='__main__':
     parser.add_argument('-l','--labelMap',help="path to the pbtxt containing the label definition",required=True)
     parser.add_argument('-t','--target',help="path to an image to test or to a txt file with the list of image to test (one path per row)",required=True)
     parser.add_argument('-v','--visualization',help="flag to enable visualization",action='store_true')
+    parser.add_argument('-o','--output',help="output folder were the detections will be saved",required=True)
     args = parser.parse_args()
 
     for path in [args.graph,args.labelMap,args.target]:
@@ -110,5 +111,26 @@ if __name__=='__main__':
     print('Start detection')
     results = predict(img_to_test,detection_graph,category_index,args.visualization)
 
-    #TODO evaluation?
-        
+    print('Saving detections')
+    #creating destination folder
+    os.makedirs(args.output,exist_ok=True)
+    format_string='{} {} {} {} {} {}\n'
+    for index,val in enumerate(results):
+        filename=os.path.basename(img_to_test[index])
+        filename=filename[:-4]+'.txt'
+        width, height = Image.open(img_to_test[index]).size
+        classes = val['classes']
+        boxes = val['boxes']
+        scores = val['scores']
+        num_detections = val['num_detections']
+        with open(os.path.join(args.output,filename),'w+') as f_out:
+            for idx in range(scores.shape[1]):
+                s = scores[0][idx]
+                c = classes[0][idx]-1
+                ymin, xmin, ymax, xmax = boxes[0][idx]
+                x_center = (xmax-xmin)/2*width
+                y_center = (ymax-ymin)/2*height
+                w = (xmax-xmin)/width
+                h = (ymax-ymin)/height
+                f_out.write(format_string.format(c,x_center,y_center,w,h,s))
+    print('All Done!')
