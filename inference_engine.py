@@ -34,7 +34,7 @@ def load_image_into_numpy_array(image):
 
 
 def predict(test_image_paths, detection_graph, category_index=None, visualization=False):
-    result= [{}]*len(test_image_paths)
+    result= [{} for _ in range(len(test_image_paths))]
     with detection_graph.as_default():
         with tf.Session(graph=detection_graph) as sess:
             for index,image_path in enumerate(test_image_paths):
@@ -128,8 +128,8 @@ if __name__=='__main__':
                 s = scores[0][idx]
                 c = classes[0][idx]-1
                 ymin, xmin, ymax, xmax = boxes[0][idx]
-                x_center = (xmax-xmin)/2
-                y_center = (ymax-ymin)/2
+                x_center = (xmax-xmin)/2+xmin
+                y_center = (ymax-ymin)/2+ymin
                 w = (xmax-xmin)
                 h = (ymax-ymin)
                 f_out.write(format_string.format(c,x_center,y_center,w,h,s))
