@@ -128,9 +128,9 @@ if __name__=='__main__':
                 s = scores[0][idx]
                 c = classes[0][idx]-1
                 ymin, xmin, ymax, xmax = boxes[0][idx]
-                x_center = (xmax-xmin)/2*width
-                y_center = (ymax-ymin)/2*height
-                w = (xmax-xmin)/width
-                h = (ymax-ymin)/height
+                x_center = (xmax-xmin)/2
+                y_center = (ymax-ymin)/2
+                w = (xmax-xmin)
+                h = (ymax-ymin)
                 f_out.write(format_string.format(c,x_center,y_center,w,h,s))
     print('All Done!')
