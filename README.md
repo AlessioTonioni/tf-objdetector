@@ -7,7 +7,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
 **Requires:**
 + Python3
 + tensorflow --> https://www.tensorflow.org/
-+ tensorflow object detection api --> https://github.com/tensorflow/models/tree/master/object_detection
++ tensorflow object detection api --> https://github.com/tensorflow/models/tree/master/research/object_detection
 
 1. Create a dataset in yolo like format: 
 
@@ -41,7 +41,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
     ```
     + TRAINING,VALIDATION: path to the tfrecord to be used for training and validation
     + LABELS: path to the labelmap.pbtxt
-    + WEIGHTS: path to the starting weights of the model, available here --> <https://github.com/tensorflow/models/blob/master/object_detection/g3doc/detection_model_zoo.md>
+    + WEIGHTS: path to the starting weights of the model, available here --> <https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md>
     + MODEL: name of the model to be used
 
     If needed change the parameter in the produced 'model.config'
