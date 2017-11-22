@@ -30,6 +30,7 @@ if __name__=='__main__':
     parser.add_argument('-l','--label', help="path to the labelmap file",required=True)
     parser.add_argument('-w','--weights',help="path to the checkpoint path to be used as initialization",required=True)
     parser.add_argument('-o','--output', help="path where the output config file will be saved",default="model.config")
+    parser.add_argument('-s','--step',help="max number of training step for the detector",type=int)
     args=parser.parse_args()
 
     for p in [args.training, args.validation, args.label]:
@@ -62,6 +63,8 @@ if __name__=='__main__':
                 in_validation=False
         elif 'label_map_path' in l:
             l = l.replace('PATH_TO_BE_CONFIGURED', args.label)
+        elif 'num_step' in l:
+            l = l.replace('??',str(args.step))
         new_lines.append(l)
 
     with open(args.output,'w+') as f_out:

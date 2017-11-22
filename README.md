@@ -2,9 +2,10 @@
 
 This repository provides a bunch of scripts to train and deploy an object detector using tensorflow object detection api.
 
-Follow the step by step guide to train, validate and deploy your own object detector 
+Follow the step by step guide to train, validate and deploy your own object detector.
 
 **Requires:**
+
 + Python3
 + tensorflow --> https://www.tensorflow.org/
 + tensorflow object detection api --> https://github.com/tensorflow/models/tree/master/research/object_detection
@@ -17,7 +18,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
     + 'validationlist.txt' --> a txt file where each row refer an image to be used as validation sample, images and labels folder should be contained in the same directory
     + 'className.txt' --> a txt file with the name of the class to be displayed, one per row
 
-2. Convert both the trainign and validation set to tfrecord:
+1. Convert both the trainign and validation set to tfrecord:
 
     ``` bash
     python yolo_tf_converter.py \
@@ -29,7 +30,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
     + OUTPUT: where the output files will be saved (tfrecord+labelmap)
     + CLASSES: path to the className.txt file
 
-3. Create the configuration file for training using the create_config.py script
+1. Create the configuration file for training using the create_config.py script
 
     ``` bash
     python create_config.py \
@@ -37,16 +38,18 @@ Follow the step by step guide to train, validate and deploy your own object dete
         -v ${VALIDATION} \
         -l ${LABELS} \
         -w ${WEIGHTS} \
-        -m ${MODEL}
+        -m ${MODEL} \
+        -s ${STEP}
     ```
     + TRAINING,VALIDATION: path to the tfrecord to be used for training and validation
     + LABELS: path to the labelmap.pbtxt
     + WEIGHTS: path to the starting weights of the model, available here --> <https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md>
     + MODEL: name of the model to be used
+    + STEP: number of training steps for the detector
 
     If needed change the parameter in the produced 'model.config'
 
-4. Train the model as long as possible:
+1. Train the model as long as possible:
 
     ``` bash
     # From the tensorflow/models/ directory
@@ -58,7 +61,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
     + PATH_TO_YOUR_PIPELINE_CONFIG: path to the model.config generated at step 3
     + PATH_TO_TRAIN_DIR: where the model will be saved
 
-5. OPTIONAL - Run evaluation
+1. OPTIONAL - Run evaluation
 
     ```bash
     # From the tensorflow/models/ directory
@@ -70,7 +73,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
     ```
     + PATH_TO_EVAL_DIR: where the evaluation event will be saved (use tensorboard to visualize them)
 
-6. Export trained model as inference graph (WARNING: this action freeze the weight, so the model can only be used for inference not for training)
+1. Export trained model as inference graph (WARNING: this action freeze the weight, so the model can only be used for inference not for training)
 
     ``` bash
     # From tensorflow/models
@@ -81,7 +84,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
         --output_directory output_inference_graph
     ```
 
-7. Visual Detection 
+1. Visual Detection 
 
     ``` bash
     python inference_engine.py \
