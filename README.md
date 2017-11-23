@@ -52,7 +52,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
 1. Train the model as long as possible:
 
     ``` bash
-    # From the tensorflow/models/ directory
+    # From the tensorflow/models/research directory
     python object_detection/train.py \
         --logtostderr \
         --pipeline_config_path=${PATH_TO_YOUR_PIPELINE_CONFIG} \
@@ -64,7 +64,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
 1. OPTIONAL - Run evaluation
 
     ```bash
-    # From the tensorflow/models/ directory
+    # From the tensorflow/models/research directory
     python object_detection/eval.py \
         --logtostderr \
         --pipeline_config_path=${PATH_TO_YOUR_PIPELINE_CONFIG} \
@@ -76,7 +76,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
 1. Export trained model as inference graph (WARNING: this action freeze the weight, so the model can only be used for inference not for training)
 
     ``` bash
-    # From tensorflow/models
+    # From tensorflow/models/research
     python object_detection/export_inference_graph.py \
         --input_type image_tensor \
         --pipeline_config_path ${PIPELINE_CONFIG_PATH} \
