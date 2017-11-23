@@ -6,7 +6,7 @@ from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as vis_util
 from PIL import Image
 from matplotlib import pyplot as plt
-
+import time
 
 def setup_inference_graph(path_to_pb):
     detection_graph = tf.Graph()
@@ -28,37 +28,35 @@ def load_label_map(path_to_pbtxt):
     return category_index
 
 
-def load_image_into_numpy_array(image):
-    (im_width, im_height) = image.size
-    return np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
-
-
 def predict(test_image_paths, detection_graph, category_index=None, visualization=False):
     result= [{} for _ in range(len(test_image_paths))]
     with detection_graph.as_default():
         with tf.Session(graph=detection_graph) as sess:
+            #fetch usefull stuff
+            image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+            # Each box represents a part of the image where a particular object was detected.
+            boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+            # Each score represent how level of confidence for each of the objects.
+            # Score is shown on the result image, together with the class label.
+            scores = detection_graph.get_tensor_by_name('detection_scores:0')
+            classes = detection_graph.get_tensor_by_name('detection_classes:0')
+            num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+
             for index,image_path in enumerate(test_image_paths):
                 #laod images
-                image = Image.open(image_path)
-                image_np = load_image_into_numpy_array(image)
+                s_t = time.clock()
+                image_np = np.array(Image.open(image_path))
 
                 # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
                 image_np_expanded = np.expand_dims(image_np, axis=0)
-                image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
-                # Each box represents a part of the image where a particular object was detected.
-                boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
-                # Each score represent how level of confidence for each of the objects.
-                # Score is shown on the result image, together with the class label.
-                scores = detection_graph.get_tensor_by_name('detection_scores:0')
-                classes = detection_graph.get_tensor_by_name('detection_classes:0')
-                num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+
                 # Actual detection.
-                (boxes, scores, classes, num_detections) = sess.run([boxes, scores, classes, num_detections],feed_dict={image_tensor: image_np_expanded})
-                
-                result[index]['boxes']=boxes
-                result[index]['scores']=scores
-                result[index]['classes']=classes
-                result[index]['num_detections']=num_detections
+                (bs, ss, cs, ns) = sess.run([boxes, scores, classes, num_detections],feed_dict={image_tensor: image_np_expanded})
+   
+                result[index]['boxes']=bs
+                result[index]['scores']=ss
+                result[index]['classes']=cs
+                result[index]['num_detections']=ns
 
                 print('{}/{}'.format(index,len(test_image_paths)),end='\r')
 
@@ -86,6 +84,7 @@ if __name__=='__main__':
     parser.add_argument('-t','--target',help="path to an image to test or to a txt file with the list of image to test (one path per row)",required=True)
     parser.add_argument('-v','--visualization',help="flag to enable visualization",action='store_true')
     parser.add_argument('-o','--output',help="output folder were the detections will be saved",required=True)
+    parser.add_argument('-b','--base_folder',help="base folder for the test image",default='')
     args = parser.parse_args()
 
     for path in [args.graph,args.labelMap,args.target]:
@@ -116,14 +115,18 @@ if __name__=='__main__':
     os.makedirs(args.output,exist_ok=True)
     format_string='{} {} {} {} {} {}\n'
     for index,val in enumerate(results):
-        filename=os.path.basename(img_to_test[index])
+        if len(args.base_folder)>0:
+            filename=img_to_test[index].replace(args.base_folder,'')
+        else:
+            filename = os.path.basename(img_to_test[index])
         filename=filename[:-4]+'.txt'
-        width, height = Image.open(img_to_test[index]).size
         classes = val['classes']
         boxes = val['boxes']
         scores = val['scores']
         num_detections = val['num_detections']
-        with open(os.path.join(args.output,filename),'w+') as f_out:
+        destination = os.path.join(args.output,filename)
+        os.makedirs(os.path.abspath(os.path.join(destination, os.pardir)),exist_ok=True)
+        with open(destination,'w+') as f_out:
             for idx in range(scores.shape[1]):
                 s = scores[0][idx]
                 c = classes[0][idx]-1
