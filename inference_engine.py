@@ -64,9 +64,9 @@ def predict(test_image_paths, detection_graph, category_index=None, visualizatio
                     # Visualization of the results of a detection.
                     vis_util.visualize_boxes_and_labels_on_image_array(
                         image_np,
-                        np.squeeze(boxes),
-                        np.squeeze(classes).astype(np.int32),
-                        np.squeeze(scores),
+                        np.squeeze(bs),
+                        np.squeeze(cs).astype(np.int32),
+                        np.squeeze(ss),
                         category_index,
                         use_normalized_coordinates=True,
                         line_thickness=8)
