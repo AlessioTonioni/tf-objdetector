@@ -6,6 +6,8 @@ MODEL_NAME_TO_PATH={
     'faster_rcnn_resnet50':'sample_config/faster_rcnn_resnet50.config',
     'faster_rcnn_resnet101':'sample_config/faster_rcnn_resnet101.config',
     'faster_rcnn_resnet152':'sample_config/faster_rcnn_resnet152.config',
+    'faster_rcnn_inception_v2':'sample_config/faster_rcnn_inception_v2.config',
+    'faster_rcnn_nas':'sample_config/faster_rcnn_nas.config',
     'rfcn_resnet101':'sample_config/rfcn_resnet101.config',
     'ssd_inception_v2':'sample_config/ssd_inception_v2.config',
     'ssd_mobilenet_v1':'sample_config/ssd_mobilenet_v1.config'
