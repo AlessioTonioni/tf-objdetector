@@ -99,3 +99,16 @@ Follow the step by step guide to train, validate and deploy your own object dete
     + LABEL_MAP: path to labelmap.pbtxt
     + TARGET: path to an image to test or to a .txt file with the list of image to test (one per row)
     + OUT_FLD: folder were the prediction will be saved, one '.txt' file for each image with one detection per row encoded as: %class %X_center %Y_center %width %height %confidence
+    
+1. OPTIONAL - Live detection from webcam (needs opencv...)
+    
+    ``` bash
+    python webcam_detection.py \
+        -g ${GRAPH} \
+        -l ${LABEL_MAP} \
+        -c ${CAM_ID}
+    ```
+    
+    + GRAPH: path to the frozen inference graph produced at step 6
+    + LABEL_MAP: path to labelmap.pbtxt
+    + CAM_ID: id of the camera as seen by opencv
