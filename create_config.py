@@ -7,7 +7,7 @@ MODEL_NAME_TO_PATH={
     'faster_rcnn_resnet101':os.path.join('sample_config','faster_rcnn_resnet101.config'),
     'faster_rcnn_resnet152':os.path.join('sample_config','faster_rcnn_resnet152.config'),
     'faster_rcnn_inception_v2':os.path.join('sample_config','faster_rcnn_inception_v2.config'),
-    'faster_rcnn_nas':os.path.join('sample_config/',faster_rcnn_nas.config'),
+    'faster_rcnn_nas':os.path.join('sample_config/','faster_rcnn_nas.config'),
     'rfcn_resnet101':os.path.join('sample_config','rfcn_resnet101.config'),
     'ssd_inception_v2':os.path.join('sample_config','ssd_inception_v2.config'),
     'ssd_mobilenet_v1':os.path.join('sample_config','ssd_mobilenet_v1.config')
