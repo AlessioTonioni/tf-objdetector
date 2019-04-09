@@ -29,12 +29,11 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser(description="Load an inference graph and use it on a webcam stream")
     parser.add_argument('-g','--graph',help="path to the pb file with the graph and weight definition",required=True)
     parser.add_argument('-l','--labelMap',help="path to the pbtxt containing the label definition",required=True)
-    parser.add_argument('-c','--camera', help="camera number to be used", default=0, type=int)
-    parser.add_argument('-v', '--video', help="video to load", default=None)
-    parser.add_argument('-th', help="confidence threshold", default=0.5, type=float)
+    parser.add_argument('-f','--files',help="files where we want to visualize predicitons",required=True, nargs='+')
+    parser.add_argument('-th',help='minimum threshold to display predictions',type=float, default=0.5)
     args = parser.parse_args()
 
-    for path in [args.graph,args.labelMap]:
+    for path in [args.graph,args.labelMap]+args.files:
         if not os.path.exists(path):
             print('ERROR: Unable to find {}'.format(path))
             exit()
@@ -44,12 +43,6 @@ if __name__=='__main__':
 
     print('Load image labels')
     category_index = load_label_map(args.labelMap)
-
-    print('Opening webcam stream')
-    if args.video is None:
-        cam = cv2.VideoCapture(args.camera)
-    else:
-        cam = cv2.VideoCapture(args.video)
 
     #setting up tensorflow session
     with detection_graph.as_default():
@@ -64,9 +57,11 @@ if __name__=='__main__':
             classes = detection_graph.get_tensor_by_name('detection_classes:0')
             num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 
-            ret_val, read_frame = cam.read()
-            cv2.namedWindow('my webcam',cv2.WINDOW_NORMAL)
-            while ret_val:
+            cv2.namedWindow('detection',cv2.WINDOW_NORMAL)
+            for f in args.files:
+                #if f.endswith('.')
+                read_frame = cv2.imread(f, -1)
+
                 #convert bgr -> rgb
                 #convert bgr to rgb
                 read_frame = read_frame[:,:,::-1]
@@ -92,8 +87,5 @@ if __name__=='__main__':
                 read_frame=read_frame[:,:,::-1]
 
                 #show result
-                cv2.imshow('my webcam', read_frame)
-                cv2.waitKey(1)
-
-                #grab next frame
-                ret_val, read_frame = cam.read()
+                cv2.imshow('detection', read_frame)
+                cv2.waitKey(0)
