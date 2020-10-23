@@ -18,7 +18,7 @@ Follow the step by step guide to train, validate and deploy your own object dete
     + 'validationlist.txt' --> a txt file where each row refer an image to be used as validation sample, images and labels folder should be contained in the same directory
     + 'className.txt' --> a txt file with the name of the class to be displayed, one per row
 
-1. Convert both the trainign and validation set to tfrecord:
+1. Convert both the training and validation set to tfrecord:
 
     ``` bash
     python yolo_tf_converter.py \
